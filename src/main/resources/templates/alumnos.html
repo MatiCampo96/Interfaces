@@ -108,6 +108,11 @@
                         <th scope="col">Apellido</th>
                         <th scope="col">Edad</th>
                         <th scope="col">IdCurso</th>
+                        <th scope="col">Titulo</th>
+                        <th scope="col">Profesor</th>
+                        <th scope="col">Dia</th>
+                        <th scope="col">Turno</th>
+
                         <th scope="col">
                             <img src="/img/papelera.png" alt="tachito" width="4%" height="4%" />
                         </th>
@@ -120,6 +125,10 @@
                         <td th:text="${alumno.apellido}"></td>
                         <td th:text="${alumno.edad}"></td>
                         <td th:text="${alumno.idCurso}"></td>
+                        <td th:text="${cursos[alumno.idCurso - 1]?.titulo}"></td>
+                        <td th:text="${cursos[alumno.idCurso - 1]?.profesor}"></td>
+                        <td th:text="${cursos[alumno.idCurso - 1]?.dia}"></td>
+                        <td th:text="${cursos[alumno.idCurso - 1]?.turno}"></td>
                         <td>
                             <form th:action="@{/removeAlumno}">
                                 <input type="text" class="form-control" th:value="*{alumno.id}" 
