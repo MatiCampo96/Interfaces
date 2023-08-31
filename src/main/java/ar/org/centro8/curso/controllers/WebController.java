@@ -1,4 +1,4 @@
-package ar.org.centro8.curso;
+package ar.org.centro8.curso.controllers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +17,7 @@ import ar.org.centro8.curso.entities.Alumno;
 import ar.org.centro8.curso.entities.Curso;
 import ar.org.centro8.curso.repositories.AlumnoRepository;
 import ar.org.centro8.curso.repositories.CursoRepository;
+import io.swagger.v3.oas.annotations.Operation;
 
 @Controller
 public class WebController {
@@ -36,6 +37,7 @@ public class WebController {
         return "index";
     }
 
+    @Operation(description = "Obtener lista de cursos")
     @GetMapping("/cursos")
     public String getCursos(@RequestParam(name = "buscarTitulo", defaultValue = "", required = false) String buscarTitulo,
             Model model) {
@@ -55,6 +57,7 @@ public class WebController {
     return "cursos";
     }
 
+    @Operation(description = "Obtener lista de alumnos")
     @GetMapping("/alumnos")
     public String getAlumnos(
             @RequestParam(name = "buscarApellido", defaultValue = "", required = false) String buscarApellido,
@@ -69,6 +72,7 @@ public class WebController {
         return "alumnos";
     }
 
+    @Operation(description = "Guardar curso")
     @PostMapping("/saveCurso")
     public String saveCurso(@ModelAttribute Curso curso) {
         try {
@@ -83,6 +87,7 @@ public class WebController {
         return "redirect:cursos";
     }
 
+    @Operation(description = "Guardar alumno")
     @PostMapping("/saveAlumno")
     public String saveAlumno(@ModelAttribute Alumno alumno) {
         try {
@@ -97,6 +102,7 @@ public class WebController {
         return "redirect:alumnos";
     }
 
+    @Operation(description = "Eliminar curso")
     @GetMapping("/removeCurso")
     public String removeCurso(@RequestParam(name="idBorrar", defaultValue = "0", required = false) int idBorrar, Model model){
         long cantidadAlumnos=((List<Alumno>)alumnoRepository
@@ -112,6 +118,8 @@ public class WebController {
             mensajeCursos="No se puede borrar el cursos, por que tiene alumnos inscriptos!";
         return "redirect:cursos";
     }
+
+    @Operation(description = "Eliminar alumno")
     @GetMapping("/removeAlumno")
     public String removeAlumno(@RequestParam(name="idBorrar", defaultValue = "0", required = false) int idBorrar, Model model){
            

@@ -3,13 +3,11 @@ document.getElementById('eliminarBtn').addEventListener('click', function() {
     var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
     var ids = [];
     for (var i = 0; i < checkboxes.length; i++) {
-        var id = checkboxes[i].id.replace('checkbox_', '');
+        var id = checkboxes[i].value; // Usar el atributo "value" en lugar del atributo "id"
         ids.push(id);
     }
     
     // Enviar los IDs al servidor para eliminar los registros
-    
-    // Ejemplo de código para enviar una solicitud AJAX utilizando fetch
     fetch('/eliminarAlumnos', {
         method: 'POST',
         headers: {
@@ -21,8 +19,10 @@ document.getElementById('eliminarBtn').addEventListener('click', function() {
     .then(data => {
         // Eliminar las filas correspondientes a los registros eliminados
         data.forEach(id => {
-            var row = document.getElementById(`checkbox_${id}`).closest('tr');
-            row.parentNode.removeChild(row);
+            var row = document.getElementById(`fila_${id}`); // Usar un atributo "id" único en las filas
+            if (row) {
+                row.parentNode.removeChild(row);
+            }
         });
     })
     .catch(error => {
