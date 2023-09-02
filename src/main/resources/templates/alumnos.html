@@ -134,16 +134,23 @@
                         <td>
                             <form th:action="@{/removeAlumno}" id="deleteForm">
                                 <input type="text" class="form-control" th:value="${alumno.id}" name="idBorrar" hidden="true">
-                                <button type="button" class="btn btn-danger delete-btn" data-bs-toggle="modal"
-                                    th:data-bs-target="'#confirmModal-' + ${alumno.id}">Borrar</button>
+                                <button type="button" id="btnmodal" class="btn btn-danger delete-btn" data-bs-toggle="modal"
+                                    th:data-bs-target="'#confirmModal-' + ${alumno.id}">Borrarrr</button>
                             </form>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+        <script>
+            $(document).on("click", "#btnmodal", function () {
+                var alumnoId =$(this).closet("form").find("input[name='idBorrar']").val();
+                var modalId = '#confirmModal-' + alumnoId;
+                $(modalId).modal('show');
+            } )
+        </script>
         <div th:each="alumno : ${likeApellido}" th:id="'confirmModal-' + ${alumno.id}" class="modal fade" tabindex="-1"
-        role="dialog" th:aria-labelledby="'confirmModalLabel-' + ${alumno.id}" aria-hidden="true">
+        role="dialog" th:aria-labelledby="'confirmModalLabel-' + ${alumno.id}" aria-hidden="true" th:value="*{alumno.id}" name="idBorrar">
         <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -155,9 +162,10 @@
                     <div class="modal-body">
                         <p>¿Estás seguro de que quieres borrar este alumno?</p>
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer" th:value="*{alumno.id}" name="idBorrar">
+                        <input type="text" class="form-control" th:value="${alumno.id}" name="idBorrar" hidden="true">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" form="deleteForm" class="btn btn-danger">Borrar</button>
+                        <button type="submit" form="deleteForm" class="btn btn-danger"th:data-bs-target="'#confirmModal-' + ${alumno.id}">Borrar</button>
                     </div>
                 </div>
             </div>
