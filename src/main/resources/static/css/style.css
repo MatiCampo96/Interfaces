@@ -20,8 +20,21 @@ body{
     border-radius: 20px;
 }
 
+.formularioD{
+    background-color: rgb(126, 184, 243);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 20px;
+}
+
 .imagen{
     border-radius: 30px;
+}
+
+.papelera{
+    filter: invert(100%);
 }
 
 

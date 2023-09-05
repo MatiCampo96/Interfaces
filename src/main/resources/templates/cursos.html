@@ -47,8 +47,8 @@
                         <p id="pSegundos"></p>
                     </section>
                     <form class="d-flex" role="search">
-                        <input class="form-control me-2 bg-light" name="buscarTitulo" type="search" placeholder="Titulo..."
-                            aria-label="Search">
+                        <input class="form-control me-2 bg-light" name="buscarTitulo" type="search"
+                            placeholder="Titulo..." aria-label="Search">
                         <button class="btn btn-prymary btn-outline-success text-light" type="submit">Search</button>
                     </form>
                 </div>
@@ -107,8 +107,8 @@
 
         <!-- Listado de cursos -->
         <div>
-            <table class="table formulario">
-                <thead>
+            <table class="table table-striped formularioD">
+                <thead class="table-dark">
                     <tr>
                         <th scope="col">Id</th>
                         <th scope="col">Titulo</th>
@@ -118,7 +118,10 @@
                         <th scope="col">Cantidad alumnos</th>
 
                         <th scope="col">
-                            <img src="/img/papelera.png" alt="tachito" width="4%" height="4%" />
+                            <img src="/img/lapiz.png" class="papelera" alt="tachito" width="4%" height="4%" />
+                        </th>
+                        <th scope="col">
+                            <img src="/img/papelera.png" class="papelera" alt="tachito" width="4%" height="4%" />
                         </th>
                     </tr>
                 </thead>
@@ -130,24 +133,21 @@
                         <td th:text="${curso.dia}"></td>
                         <td th:text="${curso.turno}"></td>
                         <td th:text="${cantidadAlumnos[i.index]}"></td>
+                        <td></td>
                         <td>
-                            <form th:action="@{/removeCurso}" id="deleteForm">
-                                <input type="text" class="form-control" th:value="*{curso.id}" 
-                                                name="idBorrar" hidden="true">
-                                <button type="button" class="btn btn-danger delete-btn" data-bs-toggle="modal"
+                            <button type="button" class="btn btn-danger delete-btn" data-bs-toggle="modal"
                                 th:data-bs-target="'#confirmModal-' + ${curso.id}">Borrar</button>
-                            </form>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div th:each="curso : ${likeTitulo}" th:id="'confirmModal-' + ${curso.id}" class="modal fade" tabindex="-1"
-        role="dialog" th:aria-labelledby="'confirmModalLabel-' + ${curso.id}" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div th:each="curso, i : ${likeTitulo}" th:id="'confirmModal-' + ${curso.id}" class="modal fade" tabindex="-1"
+            role="dialog" th:aria-labelledby="'confirmModalLabel-' + ${curso.id}" aria-hidden="true">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="confirmModalLabel">Confirmar borrado</h5>
+                        <h5 class="modal-title" id="'confirmModalLabel-' + ${curso.id}">Confirmar borrado</h5>
                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -156,8 +156,12 @@
                         <p>¿Estás seguro de que quieres borrar este curso?</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" form="deleteForm" class="btn btn-danger">Borrar</button>
+                        <form th:action="@{/removeCurso}">
+                            <input type="text" class="form-control" th:value="*{curso.id}" 
+                            name="idBorrar" hidden="true">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-danger">Borrar</button>
+                        </form>
                     </div>
                 </div>
             </div>

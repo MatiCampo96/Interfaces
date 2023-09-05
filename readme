@@ -1,3 +1,9 @@
 Sigue fallando la ventana emergente para eliminar registros, investigar sobre modales,
 La documentacion con Open Api no parece muy eficiente con vistas, sera mejor trabajar con JSON en un futuro cercano
 A este proyecto le continuare con una ventana modal para eliminar registros, para realizar un update, y lo doy por concluido
+Deberia reemplazar el icono de la papelera por uno blanco
+Reemplace el icono de papelera.
+Las ventanas modales funcionan bien, probablemente haya codigo redundante, revisar.
+Metodo update con ventana modal. CREAR
+Tengo metodos update creados(no los probe aun) y ventana modal que no funciona.
+Podria verificar en un modelo anterior si dispone de estos metodos

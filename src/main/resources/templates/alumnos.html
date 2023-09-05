@@ -39,8 +39,8 @@
                         </li>
                     </ul>
                     <form class="d-flex" role="search">
-                        <input class="form-control me-2 bg-light" type="search" placeholder="Apellido..." aria-label="Search"
-                            name="buscarApellido">
+                        <input class="form-control me-2 bg-light" type="search" placeholder="Apellido..."
+                            aria-label="Search" name="buscarApellido">
                         <button class="btn btn-prymary btn-outline-success text-light" type="submit">Search</button>
                     </form>
                     <!-- reloj -->
@@ -97,11 +97,11 @@
                 </div>
             </div>
         </form>
-        
+
         <!-- Listado de cursos -->
         <div>
-            <table class="table formulario">
-                <thead>
+            <table class="table table-striped formularioD">
+                <thead class="table-dark">
                     <tr>
                         <th scope="col">Id</th>
                         <th scope="col">Nombre</th>
@@ -114,7 +114,10 @@
                         <th scope="col">Turno</th>
 
                         <th scope="col">
-                            <img src="/img/papelera.png" alt="tachito" width="4%" height="4%" />
+                            <img src="/img/lapiz.png" class="papelera" alt="tachito" width="4%" height="4%" />
+                        </th>
+                        <th scope="col">
+                            <img src="/img/papelera.png" class="papelera" alt="tachito" width="4%" height="4%" />
                         </th>
                     </tr>
                 </thead>
@@ -132,29 +135,24 @@
                             <td th:text="${curso.turno}"></td>
                         </span>
                         <td>
-                            <form th:action="@{/removeAlumno}" id="deleteForm">
-                                <input type="text" class="form-control" th:value="${alumno.id}" name="idBorrar" hidden="true">
-                                <button type="button" id="btnmodal" class="btn btn-danger delete-btn" data-bs-toggle="modal"
-                                    th:data-bs-target="'#confirmModal-' + ${alumno.id}">Borrarrr</button>
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                th:data-bs-target="'#updateModal-' + ${alumno.id}">Editar</button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger delete-btn" data-bs-toggle="modal"
+                                th:data-bs-target="'#confirmModal-' + ${alumno.id}">Borrar</button>
                             </form>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <script>
-            $(document).on("click", "#btnmodal", function () {
-                var alumnoId =$(this).closet("form").find("input[name='idBorrar']").val();
-                var modalId = '#confirmModal-' + alumnoId;
-                $(modalId).modal('show');
-            } )
-        </script>
         <div th:each="alumno : ${likeApellido}" th:id="'confirmModal-' + ${alumno.id}" class="modal fade" tabindex="-1"
-        role="dialog" th:aria-labelledby="'confirmModalLabel-' + ${alumno.id}" aria-hidden="true" th:value="*{alumno.id}" name="idBorrar">
-        <div class="modal-dialog" role="document">
+            role="dialog" th:aria-labelledby="'confirmModalLabel-' + ${alumno.id}" aria-hidden="true">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="confirmModalLabel">Confirmar borrado</h5>
+                        <h5 class="modal-title" id="'confirmModalLabel-' + ${alumno.id}">Confirmar borrado</h5>
                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -162,14 +160,59 @@
                     <div class="modal-body">
                         <p>¿Estás seguro de que quieres borrar este alumno?</p>
                     </div>
-                    <div class="modal-footer" th:value="*{alumno.id}" name="idBorrar">
-                        <input type="text" class="form-control" th:value="${alumno.id}" name="idBorrar" hidden="true">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" form="deleteForm" class="btn btn-danger"th:data-bs-target="'#confirmModal-' + ${alumno.id}">Borrar</button>
+                    <div class="modal-footer">
+                        <form th:action="@{/removeAlumno}">
+                            <input type="text" class="form-control" th:value="*{alumno.id}" name="idBorrar"
+                                hidden="true">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-danger">Borrar</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+        <div th:each="alumno : ${likeApellido}" th:id="'updateModal-' + ${alumno.id}" class="modal fade" tabindex="-1"
+            role="dialog" th:aria-labelledby="'updateModalLabel-' + ${alumno.id}" aria-hidden="true">
+            <form class="formulario" th:object="${alumno}" th:action="@{/updateAlumno}" method="put">
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Nombre</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" th:field="*{nombre}">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Apellido</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" th:field="*{apellido}">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Edad</label>
+                    <div class="col-sm-10">
+                        <input type="number" min="18" max="120" value="18" class="form-control" th:field="*{edad}">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Curso</label>
+                    <div class="col-sm-10">
+                        <select class="form-select" aria-label="Default select example" th:field="*{idCurso}">
+                            <option th:each="curso : ${cursos}" th:value="${curso.id}"
+                                th:text="${curso.id}+' '+${curso.titulo}+' '+${curso.profesor}+' '+${curso.dia}+' '+${curso.turno}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="reset" class="btn btn-danger">Borrar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>

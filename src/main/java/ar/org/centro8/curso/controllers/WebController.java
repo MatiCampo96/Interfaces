@@ -1,7 +1,6 @@
 package ar.org.centro8.curso.controllers;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,9 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import ar.org.centro8.curso.entities.Alumno;
 import ar.org.centro8.curso.entities.Curso;
@@ -126,4 +124,65 @@ public class WebController {
         alumnoRepository.delete(alumnoRepository.findById(idBorrar).get());
         return "redirect:alumnos";
     }
+
+    @Operation(description = "Actualizar curso")
+    @PutMapping("/updateCurso")
+    public String updateCurso(@ModelAttribute Curso curso, @RequestParam("id") int cursoId) {
+        try {
+            // Verifica si el curso ya existe en la base de datos por su ID
+            Curso cursoExistente = cursoRepository.findById(cursoId).orElse(null);
+            
+            if (cursoExistente != null) {
+                // Actualiza las propiedades del curso existente con los nuevos valores
+            cursoExistente.setTitulo(curso.getTitulo());
+            cursoExistente.setProfesor(curso.getProfesor());
+            cursoExistente.setDia(curso.getDia());
+            cursoExistente.setTurno(curso.getTurno());
+    
+                // Guarda el curso actualizado en la base de datos
+                cursoRepository.save(cursoExistente);
+    
+                mensajeCursos = "Curso actualizado correctamente.";
+            } else {
+                mensajeCursos = "No se encontró el curso con ID: " + curso.getId();
+            }
+        } catch (Exception e) {
+            mensajeCursos = "Ocurrió un error al actualizar el curso.";
+            System.out.println("******************************************");
+            System.out.println(e);
+            System.out.println("******************************************");
+        }
+        return "redirect:cursos";
+    }
+
+    @Operation(description = "Actualizar alumno")
+    @PutMapping("/updateAlumno")
+    public String updateAlumno(@ModelAttribute Alumno alumno, @RequestParam("id") int alumnoId) {
+        try {
+            // Verifica si el alumno ya existe en la base de datos por su ID
+            Alumno alumnoExistente = alumnoRepository.findById(alumnoId).orElse(null);
+            
+            if (alumnoExistente != null) {
+                // Actualiza las propiedades del curso existente con los nuevos valores
+            alumnoExistente.setNombre(alumno.getNombre());
+            alumnoExistente.setApellido(alumno.getApellido());
+            alumnoExistente.setEdad(alumno.getEdad());
+            alumnoExistente.setIdCurso(alumno.getIdCurso());
+    
+                // Guarda el curso actualizado en la base de datos
+                alumnoRepository.save(alumnoExistente);
+    
+                mensajeAlumnos = "Alumno actualizado correctamente.";
+            } else {
+                mensajeAlumnos = "No se encontró el alumno con ID: " + alumno.getId();
+            }
+        } catch (Exception e) {
+            mensajeAlumnos = "Ocurrió un error al actualizar el curso.";
+            System.out.println("******************************************");
+            System.out.println(e);
+            System.out.println("******************************************");
+        }
+        return "redirect:alumnos";
+    }
+    
 }
